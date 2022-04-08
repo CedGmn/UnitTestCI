@@ -1,22 +1,15 @@
+name: Node js ci
 on:
   push:
     branches: [main]
-
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@master
 
-  steps:
-    
-    - name: Install dependencies
-      run: npm install
-
-    - name: Run unit tests
-      run: npm run test:unit
-
-      - name: run cypress tests
+      - name: Run cypress tests ▶
         uses: cypress-io/github-action@v2
 
         with:
@@ -24,3 +17,8 @@ jobs:
           wait-on: "http://localhost:3000"
           config: baseUrl=https://localhost:3000
 
+      - name: React Test ⚙ (npm ci, build and test)
+        run: |
+          npm ci
+          npm run build --if-present
+          npm test
